@@ -41,6 +41,8 @@ void tarefa_6(void);
 void tarefa_7(void);
 void tarefa_8(void);
 void tarefa_9(void);
+void tarefa_10(void);
+void tarefa_11(void);
 
 /*
  * Configuracao dos tamanhos das pilhas
@@ -54,6 +56,8 @@ void tarefa_9(void);
 #define TAM_PILHA_7			(TAM_MINIMO_PILHA + 24)
 #define TAM_PILHA_8			(TAM_MINIMO_PILHA + 24)
 #define TAM_PILHA_9			(TAM_MINIMO_PILHA + 24)
+#define TAM_PILHA_10		(TAM_MINIMO_PILHA + 24)
+#define TAM_PILHA_11		(TAM_MINIMO_PILHA + 24)
 #define TAM_PILHA_OCIOSA	(TAM_MINIMO_PILHA + 24)
 
 /*
@@ -68,6 +72,8 @@ uint32_t PILHA_TAREFA_6[TAM_PILHA_6];
 uint32_t PILHA_TAREFA_7[TAM_PILHA_7];
 uint32_t PILHA_TAREFA_8[TAM_PILHA_8];
 uint32_t PILHA_TAREFA_9[TAM_PILHA_9];
+uint32_t PILHA_TAREFA_10[TAM_PILHA_10];
+uint32_t PILHA_TAREFA_11[TAM_PILHA_11];
 uint32_t PILHA_TAREFA_OCIOSA[TAM_PILHA_OCIOSA];
 
 /*
@@ -80,11 +86,17 @@ int main(void)
 	/* Criacao das tarefas */
 	/* Parametros: ponteiro, nome, ponteiro da pilha, tamanho da pilha, prioridade da tarefa */
 	
-	CriaTarefa(tarefa_1, "Tarefa 1", PILHA_TAREFA_1, TAM_PILHA_1, 1);
+	//CriaTarefa(tarefa_1, "Tarefa 1", PILHA_TAREFA_1, TAM_PILHA_1, 1);
 	
-	CriaTarefa(tarefa_2, "Tarefa 2", PILHA_TAREFA_2, TAM_PILHA_2, 2);
+	//CriaTarefa(tarefa_2, "Tarefa 2", PILHA_TAREFA_2, TAM_PILHA_2, 2);
 
-	CriaTarefa(tarefa_9, "Tarefa 9", PILHA_TAREFA_9, TAM_PILHA_9, 3);
+	//CriaTarefa(tarefa_9, "Tarefa 9", PILHA_TAREFA_9, TAM_PILHA_9, 3);
+
+	CriaTarefa(tarefa_10, "Tarefa 10", PILHA_TAREFA_10, TAM_PILHA_10, 1);
+
+	CriaTarefa(tarefa_11, "Tarefa 11", PILHA_TAREFA_11, TAM_PILHA_11, 2);
+
+
 	
 	/* Cria tarefa ociosa do sistema */
 	CriaTarefa(tarefa_ociosa,"Tarefa ociosa", PILHA_TAREFA_OCIOSA, TAM_PILHA_OCIOSA, 0);
@@ -268,5 +280,30 @@ void tarefa_9(void)
 		port_pin_set_output_level(LED_0_PIN, !LED_0_ACTIVE);
 		TarefaEspera(a); 	/* tarefa 1 se coloca em espera por 3 marcas de tempo (ticks) */
 	
+	}
+}
+
+/*Modo cooperativo: Uma tarefa só será executada depois que a com maior prioridade terminar sua execução*/
+/*Modo preemptivo: Podem ocorrer interrupções na execução de uma tarefa, para que outra possa ser executada*/
+
+
+void tarefa_10(void){
+	volatile uint16_t b = 1;
+	while(1){
+		b ^= 0;
+		
+		//TarefaContinua(2);
+		TarefaEspera(100); 
+		b ^= 1;
+	}
+}
+
+void tarefa_11(void)
+{
+	volatile uint16_t c = 0;
+	for(;;)
+	{
+		c++;
+		TarefaEspera(2); /*Tarefa fica esperando por 100 marcas de tempo*/
 	}
 }
